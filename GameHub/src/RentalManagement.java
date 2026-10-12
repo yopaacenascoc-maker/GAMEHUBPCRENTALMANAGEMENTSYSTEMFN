@@ -1,0 +1,752 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
+ */
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import javax.swing.JPanel;
+/**
+ *
+ * @author Administrator
+ */
+public class RentalManagement extends javax.swing.JFrame {
+    
+    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(RentalManagement.class.getName());
+
+    /**
+     * Creates new form RentalManagement
+     */
+    public RentalManagement() {
+        initComponents();
+
+    setTitle("GameHub - Rental Management");
+    setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE);
+    setResizable(true);
+    setMinimumSize(new java.awt.Dimension(900, 600));
+
+    // Make Rental ID read-only
+    txtRentalID.setEditable(false);
+
+    // Set the table columns
+    tblRental2.setModel(new DefaultTableModel(
+        new Object[][] {},
+        new String[] {
+            "Rental ID", "Customer ID", "PC ID", "Hours", "Total"
+        }
+    ));
+
+    tblRental2.setAutoResizeMode(
+        javax.swing.JTable.AUTO_RESIZE_ALL_COLUMNS
+    );
+
+    // Main panel layout
+    jPanel2.setLayout(new java.awt.BorderLayout(15, 15));
+    jPanel2.setBorder(
+        javax.swing.BorderFactory.createEmptyBorder(20, 24, 20, 24)
+    );
+
+    jPanel2.remove(jLabel1);
+    jPanel2.remove(jPanel3);
+
+    jPanel2.add(jLabel1, java.awt.BorderLayout.NORTH);
+    jPanel2.add(jPanel3, java.awt.BorderLayout.CENTER);
+
+    // Form fields
+    jPanel3.setLayout(new java.awt.BorderLayout(15, 15));
+
+    JPanel formPanel = new JPanel(new java.awt.GridLayout(5, 2, 10, 12));
+    formPanel.setBackground(new java.awt.Color(18, 24, 38));
+
+    formPanel.add(jLabel4);
+    formPanel.add(txtRentalID);
+    formPanel.add(jLabel5);
+    formPanel.add(cmbCustomerID);
+    formPanel.add(jLabel6);
+    formPanel.add(cmbPCID);
+    formPanel.add(jLabel7);
+    formPanel.add(txtHours);
+    formPanel.add(jLabel8);
+    formPanel.add(txtTotal);
+
+    // Keep the total read-only
+    txtTotal.setEditable(false);
+
+    // Table panel
+    JPanel tablePanel = new JPanel(new java.awt.BorderLayout());
+    tablePanel.setBackground(new java.awt.Color(18, 24, 38));
+    tablePanel.add(jScrollPane2, java.awt.BorderLayout.CENTER);
+
+    // Buttons
+    JPanel buttonPanel = new JPanel(
+        new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 12, 10)
+    );
+    buttonPanel.setBackground(new java.awt.Color(18, 24, 38));
+    buttonPanel.add(btnAdd);
+    buttonPanel.add(btnUpdate);
+    buttonPanel.add(btnDelete);
+    buttonPanel.add(btnClear);
+    buttonPanel.add(btnBack);
+
+    // Arrange form, table, and buttons
+    JPanel contentPanel = new JPanel(new java.awt.BorderLayout(20, 15));
+    contentPanel.setBackground(new java.awt.Color(18, 24, 38));
+    contentPanel.add(formPanel, java.awt.BorderLayout.WEST);
+    contentPanel.add(tablePanel, java.awt.BorderLayout.CENTER);
+
+    jPanel3.add(contentPanel, java.awt.BorderLayout.CENTER);
+    jPanel3.add(buttonPanel, java.awt.BorderLayout.SOUTH);
+
+    loadCustomerIDs();
+    loadPCIDs();
+    loadRentals();
+
+    setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
+    setLocationRelativeTo(null);
+
+    }
+    
+private void loadCustomerIDs() {
+    cmbCustomerID.removeAllItems();
+
+    String sql = "SELECT id, customer_name FROM customers ORDER BY id";
+
+    try (java.sql.Connection conn = DataStore.getConnection();
+         java.sql.PreparedStatement pst = conn.prepareStatement(sql);
+         java.sql.ResultSet rs = pst.executeQuery()) {
+
+        while (rs.next()) {
+            cmbCustomerID.addItem(
+                rs.getInt("id") + " - " + rs.getString("customer_name")
+            );
+        }
+
+    } catch (Exception e) {
+        javax.swing.JOptionPane.showMessageDialog(this,
+            "Failed to load customers: " + e.getMessage());
+    }
+}
+
+private void loadPCIDs() {
+    cmbPCID.removeAllItems();
+
+    String sql = "SELECT id, pc_name FROM pcs "
+               + "WHERE status = 'Available' ORDER BY id";
+
+    try (java.sql.Connection conn = DataStore.getConnection();
+         java.sql.PreparedStatement pst = conn.prepareStatement(sql);
+         java.sql.ResultSet rs = pst.executeQuery()) {
+
+        while (rs.next()) {
+            cmbPCID.addItem(
+                rs.getInt("id") + " - " + rs.getString("pc_name")
+            );
+        }
+
+    } catch (Exception e) {
+        javax.swing.JOptionPane.showMessageDialog(this,
+            "Failed to load available PCs: " + e.getMessage());
+    }
+}
+
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        jPanel2 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        jPanel3 = new javax.swing.JPanel();
+        jLabel4 = new javax.swing.JLabel();
+        txtRentalID = new javax.swing.JTextField();
+        btnUpdate = new javax.swing.JButton();
+        btnAdd = new javax.swing.JButton();
+        btnDelete = new javax.swing.JButton();
+        btnClear = new javax.swing.JButton();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        txtHours = new javax.swing.JTextField();
+        jLabel8 = new javax.swing.JLabel();
+        txtTotal = new javax.swing.JTextField();
+        btnBack = new javax.swing.JButton();
+        cmbCustomerID = new javax.swing.JComboBox<>();
+        cmbPCID = new javax.swing.JComboBox<>();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tblRental2 = new javax.swing.JTable();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        getContentPane().setLayout(new java.awt.CardLayout());
+
+        jPanel2.setBackground(new java.awt.Color(30, 40, 60));
+
+        jLabel1.setFont(new java.awt.Font("Arial", 1, 26)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel1.setText("RENTAL MANAGEMENT");
+
+        jPanel3.setBackground(new java.awt.Color(18, 24, 38));
+
+        jLabel4.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel4.setText("Rental ID:");
+
+        btnUpdate.setText("UPDATE");
+        btnUpdate.addActionListener(this::btnUpdateActionPerformed);
+
+        btnAdd.setText("ADD");
+        btnAdd.addActionListener(this::btnAddActionPerformed);
+
+        btnDelete.setText("DELETE");
+        btnDelete.addActionListener(this::btnDeleteActionPerformed);
+
+        btnClear.setText("CLEAR");
+        btnClear.addActionListener(this::btnClearActionPerformed);
+
+        jLabel5.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel5.setText("Customer ID:");
+
+        jLabel6.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel6.setText("PC ID:");
+
+        jLabel7.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        jLabel7.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel7.setText("Hours:");
+
+        jLabel8.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        jLabel8.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel8.setText("Total:");
+
+        btnBack.setText("Back to Dashboard");
+        btnBack.addActionListener(this::btnBackActionPerformed);
+
+        cmbCustomerID.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbCustomerID.addActionListener(this::cmbCustomerIDActionPerformed);
+
+        cmbPCID.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        tblRental2.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
+            },
+            new String [] {
+                "Rental ID", "Customer ID", "PC ID", "Hours", "Total"
+            }
+        ));
+        tblRental2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblRental2MouseClicked(evt);
+            }
+        });
+        jScrollPane2.setViewportView(tblRental2);
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btnBack))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(127, 127, 127)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel4)
+                            .addComponent(btnAdd)
+                            .addComponent(jLabel5)
+                            .addComponent(jLabel6)
+                            .addComponent(jLabel7)
+                            .addComponent(jLabel8))
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addGap(18, 18, 18)
+                                .addComponent(btnUpdate)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnDelete)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnClear))
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addGap(28, 28, 28)
+                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(txtRentalID, javax.swing.GroupLayout.DEFAULT_SIZE, 290, Short.MAX_VALUE)
+                                    .addComponent(txtHours, javax.swing.GroupLayout.DEFAULT_SIZE, 290, Short.MAX_VALUE)
+                                    .addComponent(txtTotal, javax.swing.GroupLayout.DEFAULT_SIZE, 290, Short.MAX_VALUE)
+                                    .addComponent(cmbCustomerID, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(cmbPCID, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addGap(0, 231, Short.MAX_VALUE)))
+                .addContainerGap())
+            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel3Layout.createSequentialGroup()
+                    .addGap(58, 58, 58)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 666, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(75, Short.MAX_VALUE)))
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(62, 62, 62)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(txtRentalID, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(5, 5, 5)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(cmbCustomerID, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(1, 1, 1))
+                    .addComponent(jLabel5))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel6)
+                    .addComponent(cmbPCID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtHours, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel7))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel8)
+                    .addComponent(txtTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnAdd)
+                    .addComponent(btnUpdate)
+                    .addComponent(btnDelete)
+                    .addComponent(btnClear))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 216, Short.MAX_VALUE)
+                .addComponent(btnBack)
+                .addContainerGap())
+            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                    .addContainerGap(263, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(37, 37, 37)))
+        );
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(18, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel1)
+                .addGap(262, 262, 262))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(19, 19, 19)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+
+        getContentPane().add(jPanel2, "card2");
+
+        setBounds(0, 0, 851, 562);
+    }// </editor-fold>//GEN-END:initComponents
+
+    private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
+        int selectedRow = tblRental2.getSelectedRow();
+
+    if (selectedRow == -1) {
+        JOptionPane.showMessageDialog(this,
+                "Please select a rental from the table.");
+        return;
+    }
+
+    try {
+
+        // Get Rental ID from selected row
+        int rentalID = Integer.parseInt(
+                tblRental2.getValueAt(selectedRow, 0).toString()
+        );
+
+        int customerID = Integer.parseInt(
+    cmbCustomerID.getSelectedItem().toString().split(" - ")[0]
+);
+
+int pcID = Integer.parseInt(
+    cmbPCID.getSelectedItem().toString().split(" - ")[0]
+);
+
+        int hours = Integer.parseInt(
+                txtHours.getText().trim()
+        );
+
+        if (hours <= 0) {
+            JOptionPane.showMessageDialog(this,
+                    "Hours must be greater than 0.");
+            return;
+        }
+
+        // Get PC price
+        double pricePerHour;
+
+        String priceSQL =
+                "SELECT price_per_hour FROM pcs WHERE id = ?";
+
+        try (Connection conn = DataStore.getConnection();
+             PreparedStatement pst = conn.prepareStatement(priceSQL)) {
+
+            pst.setInt(1, pcID);
+
+            try (ResultSet rs = pst.executeQuery()) {
+
+                if (!rs.next()) {
+                    JOptionPane.showMessageDialog(this,
+                            "PC ID not found.");
+                    return;
+                }
+
+                pricePerHour = rs.getDouble("price_per_hour");
+            }
+        }
+
+        // Calculate new total
+        double total = pricePerHour * hours;
+
+        // Update rental
+        String sql =
+                "UPDATE rentals SET "
+                + "customer_id = ?, "
+                + "pc_id = ?, "
+                + "hours = ?, "
+                + "total = ? "
+                + "WHERE id = ?";
+
+        try (Connection conn = DataStore.getConnection();
+             PreparedStatement pst = conn.prepareStatement(sql)) {
+
+            pst.setInt(1, customerID);
+            pst.setInt(2, pcID);
+            pst.setInt(3, hours);
+            pst.setDouble(4, total);
+            pst.setInt(5, rentalID);
+
+            pst.executeUpdate();
+        }
+
+        txtTotal.setText(String.valueOf(total));
+
+        JOptionPane.showMessageDialog(this,
+                "Rental updated successfully!");
+
+        loadRentals();
+        clearFields();
+
+    } catch (NumberFormatException e) {
+
+        JOptionPane.showMessageDialog(this,
+                "Customer ID, PC ID, and Hours must be numbers.",
+                "Invalid Input",
+                JOptionPane.ERROR_MESSAGE);
+
+    } catch (Exception e) {
+
+        JOptionPane.showMessageDialog(this,
+                "Failed to update rental:\n" + e.getMessage(),
+                "Database Error",
+                JOptionPane.ERROR_MESSAGE);
+    }
+    }//GEN-LAST:event_btnUpdateActionPerformed
+
+    private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
+        String customerID =
+    cmbCustomerID.getSelectedItem().toString().split(" - ")[0];
+
+String pcID =
+    cmbPCID.getSelectedItem().toString().split(" - ")[0];
+    String hoursText = txtHours.getText().trim();
+
+    if (customerID.isEmpty() || pcID.isEmpty() || hoursText.isEmpty()) {
+        JOptionPane.showMessageDialog(this,
+                "Please fill in Customer ID, PC ID, and Hours.");
+        return;
+    }
+
+    try {
+
+        int customerId = Integer.parseInt(customerID);
+        int pcId = Integer.parseInt(pcID);
+        int hours = Integer.parseInt(hoursText);
+
+        if (hours <= 0) {
+            JOptionPane.showMessageDialog(this,
+                    "Hours must be greater than 0.");
+            return;
+        }
+
+        double pricePerHour;
+
+        // Get PC price
+        String priceSQL =
+                "SELECT price_per_hour FROM pcs WHERE id = ?";
+
+        try (Connection conn = DataStore.getConnection();
+             PreparedStatement pst = conn.prepareStatement(priceSQL)) {
+
+            pst.setInt(1, pcId);
+
+            try (ResultSet rs = pst.executeQuery()) {
+
+                if (!rs.next()) {
+                    JOptionPane.showMessageDialog(this,
+                            "PC ID not found.");
+                    return;
+                }
+
+                pricePerHour = rs.getDouble("price_per_hour");
+            }
+        }
+
+        double total = pricePerHour * hours;
+
+        // Insert rental
+        String sql =
+                "INSERT INTO rentals "
+                + "(customer_id, pc_id, hours, total) "
+                + "VALUES (?, ?, ?, ?)";
+
+        try (Connection conn = DataStore.getConnection();
+             PreparedStatement pst = conn.prepareStatement(sql)) {
+
+            pst.setInt(1, customerId);
+            pst.setInt(2, pcId);
+            pst.setInt(3, hours);
+            pst.setDouble(4, total);
+
+            pst.executeUpdate();
+        }
+
+        // Change PC status to Rented
+        String updatePC =
+                "UPDATE pcs SET status = 'Rented' WHERE id = ?";
+
+        try (Connection conn = DataStore.getConnection();
+             PreparedStatement pst = conn.prepareStatement(updatePC)) {
+
+            pst.setInt(1, pcId);
+            pst.executeUpdate();
+        }
+
+        txtTotal.setText(String.valueOf(total));
+
+        JOptionPane.showMessageDialog(this,
+                "Rental added successfully!");
+
+        loadRentals();
+        clearFields();
+
+    } catch (NumberFormatException e) {
+
+        JOptionPane.showMessageDialog(this,
+                "Customer ID, PC ID, and Hours must be numbers.",
+                "Invalid Input",
+                JOptionPane.ERROR_MESSAGE);
+
+    } catch (Exception e) {
+
+        JOptionPane.showMessageDialog(this,
+                "Failed to add rental:\n" + e.getMessage(),
+                "Database Error",
+                JOptionPane.ERROR_MESSAGE);
+    }
+    }//GEN-LAST:event_btnAddActionPerformed
+
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+        int selectedRow = tblRental2.getSelectedRow();
+
+    if (selectedRow == -1) {
+        JOptionPane.showMessageDialog(this,
+                "Please select a rental to delete.");
+        return;
+    }
+
+    int choice = JOptionPane.showConfirmDialog(
+            this,
+            "Are you sure you want to delete this rental?",
+            "Delete Rental",
+            JOptionPane.YES_NO_OPTION
+    );
+
+    if (choice != JOptionPane.YES_OPTION) {
+        return;
+    }
+
+    int rentalID =
+            Integer.parseInt(
+                    tblRental2.getValueAt(selectedRow, 0).toString()
+            );
+
+    int pcID =
+            Integer.parseInt(
+                    tblRental2.getValueAt(selectedRow, 2).toString()
+            );
+
+    try {
+
+        String sql = "DELETE FROM rentals WHERE id = ?";
+
+        try (Connection conn = DataStore.getConnection();
+             PreparedStatement pst = conn.prepareStatement(sql)) {
+
+            pst.setInt(1, rentalID);
+            pst.executeUpdate();
+        }
+
+        // Make the PC available again
+        String statusSQL =
+                "UPDATE pcs SET status = 'Available' WHERE id = ?";
+
+        try (Connection conn = DataStore.getConnection();
+             PreparedStatement pst = conn.prepareStatement(statusSQL)) {
+
+            pst.setInt(1, pcID);
+            pst.executeUpdate();
+        }
+
+        JOptionPane.showMessageDialog(this,
+                "Rental deleted successfully!");
+
+        loadRentals();
+        clearFields();
+
+    } catch (Exception e) {
+
+        JOptionPane.showMessageDialog(this,
+                "Failed to delete rental:\n" + e.getMessage(),
+                "Database Error",
+                JOptionPane.ERROR_MESSAGE);
+    
+    }
+    }//GEN-LAST:event_btnDeleteActionPerformed
+
+    private void btnClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearActionPerformed
+        clearFields();
+    }//GEN-LAST:event_btnClearActionPerformed
+
+    private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
+        Dashboard dashboard = new Dashboard();
+    dashboard.setVisible(true);
+    this.dispose();
+    }//GEN-LAST:event_btnBackActionPerformed
+
+    private void cmbCustomerIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbCustomerIDActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cmbCustomerIDActionPerformed
+
+    private void tblRental2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblRental2MouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tblRental2MouseClicked
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
+            logger.log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(() -> new RentalManagement().setVisible(true));
+    }
+    private void clearFields() {
+    txtRentalID.setText("");
+    if (cmbCustomerID.getItemCount() > 0) {
+    cmbCustomerID.setSelectedIndex(0);
+}
+
+if (cmbPCID.getItemCount() > 0) {
+    cmbPCID.setSelectedIndex(0);
+}
+    txtHours.setText("");
+    txtTotal.setText("");
+    tblRental2.clearSelection();
+}
+private void loadRentals() {
+
+    DefaultTableModel model =
+            (DefaultTableModel) tblRental2.getModel();
+
+    model.setRowCount(0);
+
+    String sql =
+            "SELECT id, customer_id, pc_id, hours, total "
+            + "FROM rentals";
+
+    try (Connection conn = DataStore.getConnection();
+         PreparedStatement pst = conn.prepareStatement(sql);
+         ResultSet rs = pst.executeQuery()) {
+
+        while (rs.next()) {
+
+            model.addRow(new Object[]{
+                rs.getInt("id"),
+                rs.getInt("customer_id"),
+                rs.getInt("pc_id"),
+                rs.getInt("hours"),
+                rs.getDouble("total")
+            });
+        }
+
+    } catch (Exception e) {
+
+        JOptionPane.showMessageDialog(this,
+                "Failed to load rentals:\n" + e.getMessage(),
+                "Database Error",
+                JOptionPane.ERROR_MESSAGE);
+    }
+}
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAdd;
+    private javax.swing.JButton btnBack;
+    private javax.swing.JButton btnClear;
+    private javax.swing.JButton btnDelete;
+    private javax.swing.JButton btnUpdate;
+    private javax.swing.JComboBox<String> cmbCustomerID;
+    private javax.swing.JComboBox<String> cmbPCID;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTable tblRental2;
+    private javax.swing.JTextField txtHours;
+    private javax.swing.JTextField txtRentalID;
+    private javax.swing.JTextField txtTotal;
+    // End of variables declaration//GEN-END:variables
+}
